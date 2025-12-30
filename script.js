@@ -36,6 +36,44 @@ const siswa = [
   { nama: "Zivilia Nuurfatma", foto: "assets/siswa35.jpg" }
 ];
 
+const siswaData = [
+  {nama:"Ahmad Fauzan R.", pass:"af001", user:"ahmad"},
+  {nama:"Anisa Aulia P.", pass:"aa002", user:"anisa"},
+  {nama:"Ariza Syifa A.", pass:"as003", user:"ariza"},
+  {nama:"Arjanti Nathania A.S.", pass:"an004", user:"arjanti"},
+  {nama:"Aurelia Batrisya U.S.", pass:"ab005", user:"aurelia"},
+  {nama:"Azka Bachtiar F.", pass:"6761", user:"azka"},
+  {nama:"Davina Nasyifa", pass:"dn007", user:"davina"},
+  {nama:"Dinda Sahfira P.", pass:"ds008", user:"dinda"},
+  {nama:"Elica Senta A.", pass:"es009", user:"elica"},
+  {nama:"Fatih Algis S.", pass:"fa010", user:"fatih"},
+  {nama:"Hafiza Azha S.", pass:"ha011", user:"hafiza"},
+  {nama:"Herliana", pass:"he012", user:"herliana"},
+  {nama:"Ivanesya Aztana", pass:"ia013", user:"ivanesya"},
+  {nama:"Jelita Sulistya N.", pass:"js014", user:"jelita"},
+  {nama:"Kartika Syalom E.H.", pass:"ks015", user:"kartika"},
+  {nama:"Levy Widya S.", pass:"lw016", user:"levy"},
+  {nama:"Mahardika Febriansyah", pass:"mf017", user:"mahardika"},
+  {nama:"Melda", pass:"me018", user:"melda"},
+  {nama:"Millah Oktapiyah", pass:"mo019", user:"millah"},
+  {nama:"M. Gilang A.", pass:"mg020", user:"gilang"},
+  {nama:"Nazzellah Nur R.", pass:"nn021", user:"nazzellah"},
+  {nama:"Novia Ardani", pass:"na022", user:"novia"},
+  {nama:"Putri Inaya A.", pass:"pi023", user:"putri"},
+  {nama:"Risma Musliyah", pass:"rm024", user:"risma"},
+  {nama:"Safa Salsabila", pass:"ss025", user:"safa"},
+  {nama:"Santri Yuliani", pass:"sy026", user:"santri"},
+  {nama:"Shafa Nur F.", pass:"sn027", user:"shafa"},
+  {nama:"Shafira Rahmadani", pass:"sr028", user:"shafira"},
+  {nama:"Silva Rahma A.", pass:"sa029", user:"silva"},
+  {nama:"Suci Rahmadiani A.", pass:"sr030", user:"suci"},
+  {nama:"Tiara Wijaya", pass:"tw031", user:"tiara"},
+  {nama:"Trissa Oktaviani", pass:"to032", user:"trissa"},
+  {nama:"Vania Wulan O.", pass:"vw033", user:"vania"},
+  {nama:"Zaki Abdussadad", pass:"za034", user:"zaki"},
+  {nama:"Zivilia Nuurfatma", pass:"zn035", user:"zivilia"}
+];
+
 const galeri = [
   'assets/kegiatan1.jpg',
   'assets/kegiatan2.jpg',
@@ -64,7 +102,7 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
 
   const user = siswa.find(s => s.user === username);
 
-  if (username === 'azka' && password === 'Ambabas') {
+  if (username === 'Fxdx' && password === 'Ambabas') {
     currentUser = { role: 'topadmin' };
   } else if (user) {
     if (password === 'Ambabas') {
@@ -171,3 +209,4 @@ window.onload = () => {
   loadGaleri();
   showPage('login');
 };
+
