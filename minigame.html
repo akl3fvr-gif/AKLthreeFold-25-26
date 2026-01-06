@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minigame - Kelas Kami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold primary-color">Kelas Kami</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
+                        <a href="gallery.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Galeri</a>
+                        <a href="minigame.html" class="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Minigame</a>
+                        <a href="profile.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Perkenalan</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userWelcome" class="text-sm text-gray-700 hidden">Selamat datang, <span id="userName"></span></span>
+                    <button id="loginBtn" class="btn-primary text-white px-4 py-2 rounded-lg text-sm font-medium">Login</button>
+                    <button id="logoutBtn" class="btn-secondary px-4 py-2 rounded-lg text-sm font-medium hidden">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Minigame Creator</h2>
+            <p class="text-xl opacity-90">Buat dan mainkan game edukatif dengan sistem drag-and-drop</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Game Type Selection -->
+            <div id="gameTypeSelection" class="mb-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Pilih Jenis Game</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div onclick="selectGameType('quiz')" class="game-type-card bg-white p-6 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105 text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Kuis</h4>
+                        <p class="text-gray-600 text-sm">Buat pertanyaan dengan beberapa pilihan jawaban</p>
+                    </div>
+                    
+                    <div onclick="selectGameType('puzzle')" class="game-type-card bg-white p-6 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105 text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a1 1 0 01-1-1V9a1 1 0 011-1h1a2 2 0 100-4H4a1 1 0 01-1-1V4a1 1 0 011-1h3a1 1 0 011 1v1z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Puzzle</h4>
+                        <p class="text-gray-600 text-sm">Susun potongan gambar menjadi utuh</p>
+                    </div>
+                    
+                    <div onclick="selectGameType('memory')" class="game-type-card bg-white p-6 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105 text-center">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Memory</h4>
+                        <p class="text-gray-600 text-sm">Cari pasangan kartu yang cocok</p>
+                    </div>
+                    
+                    <div onclick="selectGameType('find_difference')" class="game-type-card bg-white p-6 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105 text-center">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Cari Perbedaan</h4>
+                        <p class="text-gray-600 text-sm">Temukan perbedaan antara dua gambar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Creator Interface -->
+            <div id="gameCreator" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="backToSelection()" class="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Kembali
+                    </button>
+                    <h3 id="currentGameType" class="text-2xl font-bold text-gray-900"></h3>
+                    <button onclick="saveGame()" class="btn-primary text-white px-6 py-2 rounded-lg font-medium">Simpan Game</button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Blocks Palette -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-lg shadow-md p-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Blok Game</h4>
+                            <div id="blocksPalette" class="space-y-3">
+                                <!-- Blocks will be populated based on game type -->
+                            </div>
+                        </div>
+                        
+                        <!-- Sprites Selection -->
+                        <div class="bg-white rounded-lg shadow-md p-4 mt-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Sprite</h4>
+                            <div id="spritesList" class="grid grid-cols-3 gap-2">
+                                <!-- Sprites will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Game Canvas -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow-md p-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Area Game</h4>
+                            <div id="gameCanvas" class="game-canvas p-4 min-h-96">
+                                <!-- Game content will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Game Logic -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-lg shadow-md p-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Logika Game</h4>
+                            <div id="gameLogic" class="drop-zone p-4 rounded-lg">
+                                <p class="text-gray-500 text-center">Drag blok ke sini untuk membuat logika game</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Game Preview -->
+                        <div class="bg-white rounded-lg shadow-md p-4 mt-4">
+                            <h4 class="text-lg font-semibold text-gray-900 mb-4">Preview</h4>
+                            <button onclick="previewGame()" class="btn-secondary w-full px-4 py-2 rounded-lg font-medium mb-3">
+                                Mainkan Game
+                            </button>
+                            <div id="gamePreview" class="bg-gray-100 rounded-lg p-4 min-h-32 text-center text-gray-500">
+                                Klik "Mainkan Game" untuk melihat preview
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Existing Games -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Game yang Sudah Dibuat</h3>
+                <p class="text-gray-600 text-lg">Mainkan game buatan teman-teman kelas</p>
+            </div>
+            
+            <div id="existingGames" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Existing games will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2024 Kelas Kami. Dibuat dengan ❤️ untuk komunitas belajar.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.5);">
+        <div class="bg-white p-8 max-w-md w-full mx-4 rounded-2xl shadow-2xl">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Login untuk Membuat Game</h3>
+                <p class="text-gray-600">Masukkan username dan password Anda</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan username" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan password" required>
+                </div>
+                
+                <div id="loginError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    <p class="text-sm">Username atau password salah!</p>
+                </div>
+                
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-medium">
+                    Login
+                </button>
+            </form>
+            
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Minigame-specific JavaScript
+        let selectedGameType = null;
+        let gameBlocks = [];
+        let selectedSprite = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            checkSession();
+            
+            // Load existing games
+            loadExistingGames();
+        });
+        
+        // Select game type
+        function selectGameType(type) {
+            if (!currentUser) {
+                showNotification('Silakan login terlebih dahulu untuk membuat game!', 'warning');
+                showLoginModal();
+                return;
+            }
+            
+            selectedGameType = type;
+            document.getElementById('gameTypeSelection').classList.add('hidden');
+            document.getElementById('gameCreator').classList.remove('hidden');
+            document.getElementById('currentGameType').textContent = getGameTypeName(type);
+            
+            // Initialize game creator
+            initializeGameCreator(type);
+        }
+        
+        // Get game type display name
+        function getGameTypeName(type) {
+            const names = {
+                'quiz': 'Kuis',
+                'puzzle': 'Puzzle',
+                'memory': 'Memory',
+                'find_difference': 'Cari Perbedaan'
+            };
+            return names[type] || type;
+        }
+        
+        // Initialize game creator based on type
+        function initializeGameCreator(type) {
+            // Initialize blocks palette
+            initializeBlocksPalette(type);
+            
+            // Initialize sprites
+            initializeSprites();
+            
+            // Initialize game canvas
+            initializeGameCanvas(type);
+            
+            // Setup drag and drop
+            setupDragAndDrop();
+        }
+        
+        // Initialize blocks palette
+        function initializeBlocksPalette(type) {
+            const blocksPalette = document.getElementById('blocksPalette');
+            blocksPalette.innerHTML = '';
+            
+            const blocks = getBlocksForGameType(type);
+            
+            blocks.forEach(block => {
+                const blockElement = document.createElement('div');
+                blockElement.className = 'game-block bg-blue-100 p-3 rounded-lg cursor-grab border-2 border-blue-300';
+                blockElement.setAttribute('data-block-type', block.type);
+                blockElement.innerHTML = `
+                    <div class="text-sm font-medium text-blue-800">${block.name}</div>
+                    <div class="text-xs text-blue-600 mt-1">${block.description}</div>
+                `;
+                blocksPalette.appendChild(blockElement);
+            });
+        }
+        
+        // Get blocks for game type
+        function getBlocksForGameType(type) {
+            const blockSets = {
+                'quiz': [
+                    { type: 'question', name: 'Pertanyaan', description: 'Tambah pertanyaan' },
+                    { type: 'option', name: 'Jawaban', description: 'Tambah pilihan jawaban' },
+                    { type: 'correct', name: 'Jawaban Benar', description: 'Tentukan jawaban yang benar' },
+                    { type: 'score', name: 'Skor', description: 'Tambah skor untuk jawaban benar' }
+                ],
+                'puzzle': [
+                    { type: 'piece', name: 'Potongan Puzzle', description: 'Tambah potongan puzzle' },
+                    { type: 'target', name: 'Target Area', description: 'Area tujuan puzzle' },
+                    { type: 'timer', name: 'Timer', description: 'Waktu permainan' }
+                ],
+                'memory': [
+                    { type: 'card', name: 'Kartu', description: 'Tambah kartu memory' },
+                    { type: 'pair', name: 'Pasangan', description: 'Tentukan pasangan kartu' },
+                    { type: 'flip', name: 'Flip Effect', description: 'Efek membalik kartu' }
+                ],
+                'find_difference': [
+                    { type: 'image', name: 'Gambar', description: 'Tambah gambar' },
+                    { type: 'difference', name: 'Perbedaan', description: 'Tentukan perbedaan' },
+                    { type: 'hint', name: 'Petunjuk', description: 'Tambah petunjuk' }
+                ]
+            };
+            
+            return blockSets[type] || [];
+        }
+        
+        // Initialize sprites
+        function initializeSprites() {
+            const spritesList = document.getElementById('spritesList');
+            spritesList.innerHTML = '';
+            
+            const sprites = [
+                { name: 'cat', emoji: '🐱', color: 'bg-orange-100' },
+                { name: 'dog', emoji: '🐶', color: 'bg-brown-100' },
+                { name: 'rabbit', emoji: '🐰', color: 'bg-pink-100' },
+                { name: 'bear', emoji: '🐻', color: 'bg-yellow-100' },
+                { name: 'panda', emoji: '🐼', color: 'bg-gray-100' },
+                { name: 'lion', emoji: '🦁', color: 'bg-yellow-200' }
+            ];
+            
+            sprites.forEach(sprite => {
+                const spriteElement = document.createElement('div');
+                spriteElement.className = `sprite-item ${sprite.color} p-3 rounded-lg text-center`;
+                spriteElement.innerHTML = `
+                    <div class="text-2xl mb-1">${sprite.emoji}</div>
+                    <div class="text-xs font-medium text-gray-700">${sprite.name}</div>
+                `;
+                spriteElement.addEventListener('click', () => selectSprite(sprite));
+                spritesList.appendChild(spriteElement);
+            });
+        }
+        
+        // Select sprite
+        function selectSprite(sprite) {
+            document.querySelectorAll('.sprite-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.target.closest('.sprite-item').classList.add('selected');
+            selectedSprite = sprite;
+        }
+        
+        // Initialize game canvas
+        function initializeGameCanvas(type) {
+            const gameCanvas = document.getElementById('gameCanvas');
+            gameCanvas.innerHTML = `
+                <div class="text-center text-gray-500 py-8">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h4 class="text-lg font-medium text-gray-900 mb-2">Area Game Kosong</h4>
+                    <p class="text-gray-500">Drag blok dari palette untuk memulai membuat game</p>
+                </div>
+            `;
+        }
+        
+        // Setup drag and drop
+        function setupDragAndDrop() {
+            const gameLogic = document.getElementById('gameLogic');
+            
+            // Make blocks draggable
+            document.querySelectorAll('.game-block').forEach(block => {
+                block.draggable = true;
+                block.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.getAttribute('data-block-type'));
+                });
+            });
+            
+            // Setup drop zone
+            gameLogic.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+            });
+            
+            gameLogic.addEventListener('dragleave', function(e) {
+                this.classList.remove('drag-over');
+            });
+            
+            gameLogic.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                
+                const blockType = e.dataTransfer.getData('text/plain');
+                addBlockToLogic(blockType);
+            });
+        }
+        
+        // Add block to logic
+        function addBlockToLogic(blockType) {
+            const gameLogic = document.getElementById('gameLogic');
+            
+            // Remove placeholder text if exists
+            const placeholder = gameLogic.querySelector('p');
+            if (placeholder) {
+                placeholder.remove();
+            }
+            
+            const blockElement = document.createElement('div');
+            blockElement.className = 'bg-blue-500 text-white p-3 rounded-lg mb-2 flex items-center justify-between';
+            blockElement.innerHTML = `
+                <span class="text-sm font-medium">${getBlockDisplayName(blockType)}</span>
+                <button onclick="this.parentElement.remove()" class="text-white hover:text-red-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            `;
+            
+            gameLogic.appendChild(blockElement);
+            gameBlocks.push(blockType);
+        }
+        
+        // Get block display name
+        function getBlockDisplayName(blockType) {
+            const names = {
+                'question': 'Pertanyaan',
+                'option': 'Jawaban',
+                'correct': 'Jawaban Benar',
+                'score': 'Skor',
+                'piece': 'Potongan Puzzle',
+                'target': 'Target Area',
+                'timer': 'Timer',
+                'card': 'Kartu',
+                'pair': 'Pasangan',
+                'flip': 'Flip Effect',
+                'image': 'Gambar',
+                'difference': 'Perbedaan',
+                'hint': 'Petunjuk'
+            };
+            return names[blockType] || blockType;
+        }
+        
+        // Preview game
+        function previewGame() {
+            const gamePreview = document.getElementById('gamePreview');
+            
+            if (gameBlocks.length === 0) {
+                gamePreview.innerHTML = `
+                    <div class="text-center text-red-500">
+                        <p>Belum ada blok yang ditambahkan!</p>
+                        <p class="text-sm text-gray-500 mt-1">Drag blok ke area logika terlebih dahulu</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Simple preview based on game type
+            let previewContent = '';
+            
+            switch(selectedGameType) {
+                case 'quiz':
+                    previewContent = `
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-semibold mb-3">Kuis Preview</h5>
+                            <div class="mb-3">
+                                <p class="mb-2">Pertanyaan: Apa ibu kota Indonesia?</p>
+                                <div class="space-y-1">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="quiz" class="mr-2"> Jakarta
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="quiz" class="mr-2"> Bandung
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="quiz" class="mr-2"> Surabaya
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="btn-primary text-white px-4 py-2 rounded text-sm">Submit Jawaban</button>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'memory':
+                    previewContent = `
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-semibold mb-3">Memory Game Preview</h5>
+                            <div class="grid grid-cols-4 gap-2">
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">A</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">B</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">A</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">C</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">B</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">D</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">C</div>
+                                <div class="bg-blue-500 h-12 rounded flex items-center justify-center text-white font-bold">D</div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-2">Klik untuk mencari pasangan yang cocok!</p>
+                        </div>
+                    `;
+                    break;
+                    
+                default:
+                    previewContent = `
+                        <div class="bg-white p-4 rounded-lg text-center">
+                            <h5 class="font-semibold mb-2">Preview ${getGameTypeName(selectedGameType)}</h5>
+                            <p class="text-gray-600 text-sm">Game ini memiliki ${gameBlocks.length} blok logika</p>
+                            <div class="mt-3">
+                                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                                    ${gameBlocks.length} blok ditambahkan
+                                </span>
+                            </div>
+                        </div>
+                    `;
+            }
+            
+            gamePreview.innerHTML = previewContent;
+        }
+        
+        // Save game
+        function saveGame() {
+            if (!currentUser) {
+                showNotification('Silakan login terlebih dahulu!', 'warning');
+                return;
+            }
+            
+            if (gameBlocks.length === 0) {
+                showNotification('Tambahkan minimal satu blok sebelum menyimpan!', 'warning');
+                return;
+            }
+            
+            const gameData = {
+                id: Date.now(),
+                judul: `${getGameTypeName(selectedGameType)} oleh ${currentUser.nama}`,
+                creator: currentUser.username,
+                type: selectedGameType,
+                blocks: gameBlocks,
+                created: new Date().toISOString().split('T')[0],
+                modified: new Date().toISOString().split('T')[0]
+            };
+            
+            // Save to minigames data
+            minigamesData.unshift(gameData);
+            
+            // Save to localStorage (in real app, save to database)
+            localStorage.setItem('minigames', JSON.stringify(minigamesData));
+            
+            showNotification('Game berhasil disimpan!', 'success');
+            
+            // Reset creator
+            backToSelection();
+            
+            // Reload existing games
+            loadExistingGames();
+        }
+        
+        // Back to selection
+        function backToSelection() {
+            document.getElementById('gameCreator').classList.add('hidden');
+            document.getElementById('gameTypeSelection').classList.remove('hidden');
+            selectedGameType = null;
+            gameBlocks = [];
+            selectedSprite = null;
+        }
+        
+        // Load existing games
+        function loadExistingGames() {
+            const existingGamesContainer = document.getElementById('existingGames');
+            
+            // Load from localStorage if available
+            const savedGames = localStorage.getItem('minigames');
+            if (savedGames) {
+                const savedData = JSON.parse(savedGames);
+                minigamesData.unshift(...savedData);
+                localStorage.removeItem('minigames'); // Clear after loading
+            }
+            
+            existingGamesContainer.innerHTML = '';
+            
+            if (minigamesData.length === 0) {
+                existingGamesContainer.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m-9-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada game</h3>
+                        <p class="text-gray-500">Jadilah yang pertama membuat game!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            minigamesData.forEach(game => {
+                const gameCard = createGameCard(game);
+                existingGamesContainer.appendChild(gameCard);
+            });
+        }
+        
+        // Create game card
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all';
+            
+            const typeColors = {
+                'quiz': 'bg-blue-100 text-blue-800',
+                'puzzle': 'bg-green-100 text-green-800',
+                'memory': 'bg-yellow-100 text-yellow-800',
+                'find_difference': 'bg-red-100 text-red-800'
+            };
+            
+            card.innerHTML = `
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${typeColors[game.type] || 'bg-gray-100 text-gray-800'}">
+                            ${getGameTypeName(game.type)}
+                        </span>
+                        <span class="text-xs text-gray-500">${game.created}</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">${game.judul}</h4>
+                    <p class="text-sm text-gray-600 mb-4">Dibuat oleh: ${game.creator}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-gray-500">${game.blocks.length} blok</span>
+                        <button onclick="playGame(${game.id})" class="btn-primary text-white px-4 py-2 rounded text-sm font-medium">
+                            Mainkan
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // Play game
+        function playGame(gameId) {
+            if (!currentUser) {
+                showNotification('Silakan login terlebih dahulu untuk bermain!', 'warning');
+                showLoginModal();
+                return;
+            }
+            
+            const game = minigamesData.find(g => g.id === gameId);
+            if (game) {
+                showNotification(`Memulai game: ${game.judul}`, 'success');
+                // In a real implementation, this would launch the game
+                previewGame(); // Use preview as placeholder
+            }
+        }
+        
+        // Make functions global
+        window.selectGameType = selectGameType;
+        window.backToSelection = backToSelection;
+        window.saveGame = saveGame;
+        window.previewGame = previewGame;
+        window.playGame = playGame;
+    </script>
+</body>
+</html>

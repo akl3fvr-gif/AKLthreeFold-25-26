@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Kelas - Kelas Kami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold primary-color">Kelas Kami</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Beranda</a>
+                        <a href="gallery.html" class="text-gray-900 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Galeri</a>
+                        <a href="minigame.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Minigame</a>
+                        <a href="profile.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Perkenalan</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="userWelcome" class="text-sm text-gray-700 hidden">Selamat datang, <span id="userName"></span></span>
+                    <button id="loginBtn" class="btn-primary text-white px-4 py-2 rounded-lg text-sm font-medium">Login</button>
+                    <button id="logoutBtn" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hidden">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Galeri Kelas</h2>
+            <p class="text-xl opacity-90">Kumpulan momen berharga kita bersama</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="py-8 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                <!-- Search Box -->
+                <div class="relative flex-1 max-w-md">
+                    <input type="text" id="searchInput" placeholder="Cari foto berdasarkan deskripsi..." 
+                           class="search-box w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <svg class="absolute left-3 top-3.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterGallery('all')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-blue-600 text-white">Semua</button>
+                    <button onclick="filterGallery('januari')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-blue-600 hover:text-white">Januari</button>
+                    <button onclick="filterGallery('februari')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-blue-600 hover:text-white">Februari</button>
+                    <button onclick="filterGallery('maret')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-blue-600 hover:text-white">Maret</button>
+                    <button onclick="filterGallery('april')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-blue-600 hover:text-white">April</button>
+                    <button onclick="filterGallery('mei')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-blue-600 hover:text-white">Mei</button>
+                    <button onclick="filterGallery('juni')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-200 text-gray-700 hover:bg-blue-600 hover:text-white">Juni</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="py-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Stats -->
+            <div class="mb-6 text-center">
+                <p class="text-gray-600">Menampilkan <span id="resultCount">0</span> foto</p>
+            </div>
+            
+            <!-- Gallery Items -->
+            <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Gallery items will be populated by JavaScript -->
+            </div>
+            
+            <!-- No Results -->
+            <div id="noResults" class="hidden text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h1m4 0h1m-6 4h8m-9-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada foto ditemukan</h3>
+                <p class="text-gray-500">Coba ubah kata pencarian atau filter bulan</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2024 Kelas Kami. Dibuat dengan ❤️ untuk komunitas belajar.</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4" style="backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.5);">
+        <div class="bg-white p-8 max-w-md w-full mx-4 rounded-2xl shadow-2xl">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Login ke Kelas Kami</h3>
+                <p class="text-gray-600">Masukkan username dan password Anda</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan username" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan password" required>
+                </div>
+                
+                <div id="loginError" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    <p class="text-sm">Username atau password salah!</p>
+                </div>
+                
+                <button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-medium">
+                    Login
+                </button>
+                
+                <div class="text-center text-sm text-gray-600 mt-4">
+                    <p>Belum punya akun? Hubungi admin kelas</p>
+                </div>
+            </form>
+            
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Gallery-specific JavaScript
+        let currentGalleryFilter = 'all';
+        let searchQuery = '';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            checkSession();
+            
+            // Initialize gallery with all items
+            displayFullGallery(galleryData);
+            
+            // Setup search functionality
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function(e) {
+                searchQuery = e.target.value.toLowerCase();
+                filterAndDisplayGallery();
+            });
+        });
+        
+        // Display full gallery
+        function displayFullGallery(items) {
+            const galleryGrid = document.getElementById('galleryGrid');
+            const noResults = document.getElementById('noResults');
+            const resultCount = document.getElementById('resultCount');
+            
+            galleryGrid.innerHTML = '';
+            
+            if (items.length === 0) {
+                noResults.classList.remove('hidden');
+                resultCount.textContent = '0';
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            resultCount.textContent = items.length;
+            
+            items.forEach(item => {
+                const galleryCard = createGalleryCard(item);
+                galleryGrid.appendChild(galleryCard);
+            });
+        }
+        
+        // Filter gallery by month
+        function filterGallery(bulan) {
+            currentGalleryFilter = bulan;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            event.target.classList.remove('bg-gray-200', 'text-gray-700');
+            event.target.classList.add('bg-blue-600', 'text-white');
+            
+            filterAndDisplayGallery();
+        }
+        
+        // Filter and display gallery based on current filters
+        function filterAndDisplayGallery() {
+            let filteredItems = galleryData;
+            
+            // Filter by month
+            if (currentGalleryFilter !== 'all') {
+                filteredItems = filteredItems.filter(item => item.bulan === currentGalleryFilter);
+            }
+            
+            // Filter by search query
+            if (searchQuery) {
+                filteredItems = filteredItems.filter(item => 
+                    item.deskripsi.toLowerCase().includes(searchQuery) ||
+                    item.kategori.toLowerCase().includes(searchQuery) ||
+                    item.uploader.toLowerCase().includes(searchQuery)
+                );
+            }
+            
+            displayFullGallery(filteredItems);
+        }
+        
+        // Make function global
+        window.filterGallery = filterGallery;
+    </script>
+</body>
+</html>
